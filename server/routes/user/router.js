@@ -5,7 +5,7 @@ const SHA256 = require('sha256')
 const router = express.Router()
 
 //signup
-router.route('/signup').post( (req, res) => {
+router.route('/auth/signup').post( (req, res) => {
   const { id, pwd, name, age, phone} = req.body
   
   modules.signup(id, SHA256(pwd), name, age, phone, status => {
@@ -16,7 +16,7 @@ router.route('/signup').post( (req, res) => {
 })
 
 //signin
-router.route('/signin').post( (req, res) => {
+router.route('/auth/signin').post( (req, res) => {
   const { id, pwd } = req.body
 
   modules.signin(id, SHA256(pwd), (status, jwt) => {  

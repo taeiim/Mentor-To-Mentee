@@ -6,7 +6,7 @@ module.exports = {
   signup : (id, pwd, name, age, phone, callback) => {
     Database.query('select * from user where id = ?', [id, pwd])
       .then(result => {
-        if(result.length === 1) callback(400)
+        if(result.length === 1) callback(204)
         return Database.query('insert into user value(?, ?, ?, ?, ?)', [id, pwd, name, age, phone])
       })
       .then(result => {
@@ -26,10 +26,13 @@ module.exports = {
         if(result.length === 1) {
           jwt = jsonwebtoken.sign(payLoad, key, {
           algorithm : 'HS256',
-          expiresIn : '1440'})
+          expiresIn : 60 * 60 * 24 * 7})
           callback(200, jwt)
         }
         else callback(204, jwt)
+      })
+      .catch(err => {
+        throw err
       })
   }
 }
