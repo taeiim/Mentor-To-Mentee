@@ -1,3 +1,3 @@
-const key = 'mentomen'
+const key = 'mentomen';
 
-module.exports = key
+module.exports = key;
