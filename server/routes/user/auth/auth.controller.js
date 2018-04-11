@@ -28,13 +28,7 @@ exports.signup = (req, res) => {
 //signin
 exports.signin = (req, res) => {
   const { id, pwd } = req.body;
-  const payLoad  = {'uid': id};
-  const JWTOption = {
-    algorithm : 'HS256',
-    expiresIn : 60 * 60 * 24 * 7,
-  }
-
-  const JWT = jsonwebtoken.sign(payLoad, token.key, JWTOption);
+  const JWT = makeToken(id);
   
   let status;
 
@@ -57,15 +51,20 @@ exports.signin = (req, res) => {
 
 exports.refreshToken = (req, res) => {
   const { authorization } = req.header;
-  const uuid = JWT.verify(token.key);
+  const uuid = authorization.verify(token.key);
+
+  const JWT = makeToken(uuid);
+
+  res.writeHead(200, { 'Content-Type': 'application/json'});
+  res.end(JSON.stringify({'Authorization' : JWT}));
+};
+
+const makeToken = (uuid) => {
   const payLoad  = {'uid': uuid};
   const JWTOption = {
     algorithm : 'HS256',
     expiresIn : 60 * 60 * 24 * 7,
   }
 
-  const JWT = jsonwebtoken.sign(payLoad, token.key, JWTOption);
-
-  res.writeHead(200, { 'Content-Type': 'application/json'});
-  res.end(JSON.stringify({'Authorization' : JWT}));
-};
+  return jsonwebtoken.sign(payLoad, token.key, JWTOption);
+}
