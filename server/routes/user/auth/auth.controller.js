@@ -10,19 +10,16 @@ exports.signup = (req, res) => {
 
   Database.query('select * from user where id = ?', [id, pwd])
     .then(result => {
-      if(result.length === 1) status = 204;
+      if(result.length === 1) res.status(204).end();
       return Database.query('insert into user value(?, ?, ?, ?, ?)', [id, pwd, name, age, phone]);
     })
     .then(result => {
-      if(result.affectedRows === 1) status = 204;
-      status = 400;
+      if(result.affectedRows === 1) res.status(204).end();
+      else res.status(400).end();
     })
     .catch(err => {
       throw err;
     })
-
-    res.writeHead(status, { 'Content-Type': 'application/json'});
-    res.end();
 };
 
 //signin
@@ -36,17 +33,13 @@ exports.signin = (req, res) => {
     .then(result => {
       if(result.length === 1) {
         JWT = jsonwebtoken.sign(payLoad, key, JWTOption)
-        status = 200;
+        res.status(200).end(JSON.stringify({'Authorization' : jwt}));
       }
-      status = 204;
+      res.status(204).end();
     })
     .catch(err => {
       throw err;
     })
-
-    res.writeHead(status, { 'Content-Type': 'application/json'});
-    if (status === 200) res.end(JSON.stringify({'Authorization' : jwt}));
-    res.end()
 };
 
 exports.refreshToken = (req, res) => {
@@ -54,9 +47,8 @@ exports.refreshToken = (req, res) => {
   const uuid = authorization.verify(token.key);
 
   const JWT = makeToken(uuid);
-
-  res.writeHead(200, { 'Content-Type': 'application/json'});
-  res.end(JSON.stringify({'Authorization' : JWT}));
+  
+  res.status(200).end(JSON.stringify({'Authorization' : JWT}));
 };
 
 const makeToken = (uuid) => {
