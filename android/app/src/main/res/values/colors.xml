@@ -8,5 +8,8 @@
     <!-- custom color-->
     <color name="colorTheme">#FF8C00</color>
     <color name="colorThemeDark">#EB7F00</color>
-    <color name="colorRed">#FF0000</color>
+    <color name="Red">#FF0000</color>
+    <color name="White">#FFFFFF</color>
+    <color name="Black">#000000</color>
+    <color name="Gray">#7f7f7f</color>
 </resources>

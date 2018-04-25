@@ -1,4 +1,4 @@
-package com.example.parktaeim.mentor_to_mentee;
+package com.example.parktaeim.mentor_to_mentee.Model;
 
 public class RegisterModel {
     private final String name, id, pw, pwConfirm, phoneCall, email, age, job;

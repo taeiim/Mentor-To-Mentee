@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_search_mentoring"
+        android:enabled="true"
+        android:icon="@drawable/ic_launcher_foreground"
+        android:title="@string/prompt_search_mentoring" />
+
+    <item
+        android:id="@+id/navigation_mentor"
+        android:enabled="true"
+        android:icon="@drawable/ic_launcher_foreground"
+        android:title="@string/prompt_mentor" />
+
+    <item
+        android:id="@+id/navigation_mentee"
+        android:enabled="true"
+        android:icon="@drawable/ic_launcher_foreground"
+        android:title="@string/prompt_mentee" />
+
+    <item
+        android:id="@+id/navigation_my_page"
+        android:enabled="true"
+        android:icon="@drawable/ic_launcher_foreground"
+        android:title="@string/prompt_my_page" />
+</menu>

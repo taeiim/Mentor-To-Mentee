@@ -1,4 +1,4 @@
-package com.example.parktaeim.mentor_to_mentee;
+package com.example.parktaeim.mentor_to_mentee.Activity;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.example.parktaeim.mentor_to_mentee.R;
 
 import java.util.HashMap;
 
@@ -32,7 +34,7 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        etName = findViewById(R.id.etName);
+        etName = (EditText) findViewById(R.id.etName);
         etId = findViewById(R.id.etId);
         etPw = findViewById(R.id.etPw);
         etPwConfirm = findViewById(R.id.etPwConfirm);
@@ -40,6 +42,7 @@ public class SignUpActivity extends AppCompatActivity {
         etEmail = findViewById(R.id.etEmail);
         etAge = findViewById(R.id.etAge);
         etJob = findViewById(R.id.etJob);
+
 
         editTextHashMap = new HashMap<>();
         editTextHashMap.put(strSignUp.NAME, etName);
@@ -76,7 +79,9 @@ public class SignUpActivity extends AppCompatActivity {
     private boolean isEmailValid(String email) {
         return email.contains("@");
     }
-
+    private boolean isIdVaild(String id) {
+        return id.length() > 3;
+    }
     private boolean isPasswordValid(String password) {
         return password.length() > 4;
     }
@@ -95,15 +100,14 @@ public class SignUpActivity extends AppCompatActivity {
         for (String key : editTextHashMap.keySet()) {
             editTextHashMap.get(key).setError(null);
         }
-        signUp = new SignUp(editTextHashMap.get(strSignUp.NAME).toString(),
-                editTextHashMap.get(strSignUp.ID).toString(),
-                editTextHashMap.get(strSignUp.PW).toString(),
-                editTextHashMap.get(strSignUp.PWCONFIRM).toString(),
-                editTextHashMap.get(strSignUp.PHONECALL).toString(),
-                editTextHashMap.get(strSignUp.EMAIL).toString(),
-                editTextHashMap.get(strSignUp.AGE).toString(),
-                editTextHashMap.get(strSignUp.JOB).toString());
-
+        signUp = new SignUp(editTextHashMap.get(strSignUp.NAME).getText().toString(),
+                editTextHashMap.get(strSignUp.ID).getText().toString(),
+                editTextHashMap.get(strSignUp.PW).getText().toString(),
+                editTextHashMap.get(strSignUp.PWCONFIRM).getText().toString(),
+                editTextHashMap.get(strSignUp.PHONECALL).getText().toString(),
+                editTextHashMap.get(strSignUp.EMAIL).getText().toString(),
+                editTextHashMap.get(strSignUp.AGE).getText().toString(),
+                editTextHashMap.get(strSignUp.JOB).getText().toString());
 
         if (TextUtils.isEmpty(signUp.getName())) {
             editTextHashMap.get(strSignUp.NAME).setError(getString(R.string.error_no_input_name));
@@ -112,7 +116,12 @@ public class SignUpActivity extends AppCompatActivity {
         }
 
         else if (TextUtils.isEmpty(signUp.getId())) {
+
             editTextHashMap.get(strSignUp.ID).setError(getString(R.string.error_no_input_id));
+            focusView = editTextHashMap.get(strSignUp.ID);
+            isError = true;
+        } else if (!isIdVaild(signUp.getId())) {
+            editTextHashMap.get(strSignUp.ID).setError(getString(R.string.error_invalid_id));
             focusView = editTextHashMap.get(strSignUp.ID);
             isError = true;
         }
@@ -131,7 +140,7 @@ public class SignUpActivity extends AppCompatActivity {
             editTextHashMap.get(strSignUp.PWCONFIRM).setError(getString(R.string.error_no_input_pwConfirm));
             focusView = editTextHashMap.get(strSignUp.PWCONFIRM);
             isError = true;
-        } else if (!signUp.getPw().toString().equals(signUp.getPwConfirm().toString())) {
+        } else if (!signUp.getPw().equals(signUp.getPwConfirm())) {
             editTextHashMap.get(strSignUp.PWCONFIRM).setError(getString(R.string.error_no_match_pwConfirm));
             focusView = editTextHashMap.get(strSignUp.PWCONFIRM);
             isError = true;
@@ -179,7 +188,7 @@ public class SignUpActivity extends AppCompatActivity {
         registerTask.execute((Void) null);
     }
 
-    private class SignUp {
+    class SignUp {
         private final String name, id, pw, pwConfirm, phoneCall, email, age, job;
 
         public SignUp(String name, String id, String pw, String pwConfirm, String phoneCall, String email, String age, String job) {

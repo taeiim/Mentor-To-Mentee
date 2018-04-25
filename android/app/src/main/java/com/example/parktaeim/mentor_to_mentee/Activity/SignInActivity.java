@@ -1,4 +1,4 @@
-package com.example.parktaeim.mentor_to_mentee;
+package com.example.parktaeim.mentor_to_mentee.Activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,6 +16,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.example.parktaeim.mentor_to_mentee.R;
 
 /**
  * A login screen that offers login via Id/password.
@@ -175,7 +177,7 @@ public class SignInActivity extends AppCompatActivity {
 
         // Check for a valid Id address.
         if (TextUtils.isEmpty(Id)) {
-            mIDView.setError(getString(R.string.error_field_required));
+            mIDView.setError(getString(R.string.error_no_input_id));
             focusView = mIDView;
             cancel = true;
         }

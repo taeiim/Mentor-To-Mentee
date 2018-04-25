@@ -30,6 +30,7 @@
     <string name="error_no_input_pwConfirm">비밀번호 확인을 입력해주세요</string>
     <string name="error_no_match_pwConfirm">비밀번호가 일치하지 않습니다</string>
     <string name="error_invalid_password">비밀번호는 5글자 이상입니다</string>
+    <string name="error_invalid_id">아이디는 4글자 이상입니다</string>
     <string name="error_no_input_phoneCall">전화번호를 입력해주세요</string>
     <string name="error_no_input_email">이메일을 입력해주세요</string>
     <string name="error_invalid_email">이메일 형식이 올바르지 않습니다</string>
@@ -130,4 +131,15 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="action_settings">Settings</string>
+
+    <string name="prompt_empty_title">Empty Title</string>
+    <string name="prompt_empty_description">Empty Description</string>
+    <string name="prompt_recruitment_number_txt">모집 인원</string>
+    <string name="prompt_default_member">0명</string>
+    <string name="prompt_zero">0</string>
+
+    <string name="prompt_search_mentoring">멘토링 찾기</string>
+    <string name="prompt_mentor">내가 멘토</string>
+    <string name="prompt_mentee">내가 멘티</string>
+    <string name="prompt_my_page">마이페이지</string>
 </resources>
