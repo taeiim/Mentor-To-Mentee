@@ -1,35 +1,10 @@
-const express = require('express');
-const modules = require('./modules');
-const jwt = require('jsonwebtoken');
-const key = require('../../TokenKey');
-const router = express.Router();
+const router = require('express').Router();
+const controller = require('./mentoring.controller');
 
-router.route('/mentoring').post( (req, res) => {
-  const { title, 
-          info, 
-          leader_id, 
-          category, 
-          max_member, 
-          start_date, 
-          end_date } = req.body
-  if(checkJWT(req.headers.authorization)) {
-    res.writeHead(498, { 'Content-Type': 'application/json'});
-    res.end();
-  }
-  
-  modules.createMentoring(title, info, leader_id, category, max_member, start_date, end_date, (status => {
-    res.writeHead(status, { 'Content-Type': 'application/json'});
-    res.end();
-  }))
-})
+router.route('/mentoring').post(controller.createMentoring);
 
-const checkJWT = (token) => {
-  try {
-    const decoded = jwt.verify(token,key);
-    return false;
-  } catch(err){
-    return true;
-  }
-}
+router.route('/mentoring').get(controller.getMentoringList);
+
+router.route('/mentoring/:mentoring_id').get(controller.getMentoring);
 
 module.exports = router;

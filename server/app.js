@@ -6,7 +6,8 @@ const logger = require('morgan');
 const app = express();
 const mentoring = require('./routes/mentoring/index');
 const user = require('./routes/user/index');
-app.set('port', 8080);
+const PORT = process.env.PORT || 8080;
+app.set('port', PORT);
 
 app.use(logger('dev'));
 app.use(express.json());
