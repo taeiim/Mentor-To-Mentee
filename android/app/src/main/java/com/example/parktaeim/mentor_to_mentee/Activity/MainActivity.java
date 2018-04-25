@@ -1,5 +1,6 @@
 package com.example.parktaeim.mentor_to_mentee.Activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -10,72 +11,71 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
+import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.example.parktaeim.mentor_to_mentee.Adapter.MyPagerAdapter;
+import com.example.parktaeim.mentor_to_mentee.Fragment.AllMentoringFragment;
+import com.example.parktaeim.mentor_to_mentee.Fragment.MenteeFragment;
+import com.example.parktaeim.mentor_to_mentee.Fragment.MentorFragment;
+import com.example.parktaeim.mentor_to_mentee.Fragment.MypageFragment;
 import com.example.parktaeim.mentor_to_mentee.R;
 
 public class MainActivity extends AppCompatActivity {
-    Toolbar toolbar;
-    ViewPager viewPager;
-    final String[] tabTitles = {};
-    final Fragment[] fragments = {};
+    public static AHBottomNavigation bottomTabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initToolbar();
-        initTabPager();
-//        Intent intent = new Intent(getApplicationContext(), SignInActivity.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//        startActivity(intent);
+        setTabLayout();
     }
 
-    private void initToolbar() {
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar); //액션바로 설정, 또한 이는 기본 액션바가 존재하면 에러남. style.xml에서 노액션바해야됨
+    private void setTabLayout() {
+        bottomTabLayout = (AHBottomNavigation) findViewById(R.id.main_tabLayout);
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayShowTitleEnabled(false); //액션바에 표시되는 제목의 표시유무를 설정
-        actionBar.setDisplayShowHomeEnabled(false); // 액션바 왼쪽의 <- 버튼
+        AHBottomNavigationItem item1 = new AHBottomNavigationItem("멘토링찾기", R.drawable.ic_list);
+        AHBottomNavigationItem item2 = new AHBottomNavigationItem("내가 멘토", R.drawable.ic_mentor);
+        AHBottomNavigationItem item3 = new AHBottomNavigationItem("내가 멘티", R.drawable.ic_book);
+        AHBottomNavigationItem item4 = new AHBottomNavigationItem("마이페이지", R.drawable.ic_mypage);
 
-        LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
-        View actionbar = inflater.inflate(R.layout.item_lecture, null);
+        bottomTabLayout.addItem(item1);
+        bottomTabLayout.addItem(item2);
+        bottomTabLayout.addItem(item3);
+        bottomTabLayout.addItem(item4);
 
-        actionBar.setCustomView(actionbar);
-    }
-    private void initTabPager() {
-        TabLayout tabs = findViewById(R.id.tabs);
-//        for (int i = 0; i < days.length; i++) {
-//            tabs.addTab(tabs.newTab().setText(days[i]));
-//        }
-        viewPager = findViewById(R.id.viewPager);
-        // 탭 눌렀을때 해당 위치로 이동
-        tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        bottomTabLayout.setAccentColor(Color.parseColor("#FF8C00"));
+        bottomTabLayout.setInactiveColor(Color.parseColor("#c4c4c4"));
+        bottomTabLayout.setTitleState(AHBottomNavigation.TitleState.ALWAYS_SHOW);
+        bottomTabLayout.setCurrentItem(0);
+        bottomTabLayout.setTitleTextSizeInSp(9,8);
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AllMentoringFragment()).commit();
+        bottomTabLayout.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
             @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
+            public boolean onTabSelected(int position, boolean wasSelected) {
+                switch (position) {
+                    case 0:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AllMentoringFragment()).commit();
+                        break;
+                    case 1:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MentorFragment()).commit();
+                        break;
+                    case 2:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MenteeFragment()).commit();
+                        break;
+                    case 3:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new MypageFragment()).commit();
+                        break;
+                }
+                return true;
             }
         });
-
-        MyPagerAdapter mpa = new MyPagerAdapter(getSupportFragmentManager()); // 뷰페이저 어댑터
-
-        for(int i = 0 ; i < fragments.length ; i++) {
-            mpa.addElement(tabTitles[i], fragments[i]);
-        }
-        viewPager.setAdapter(mpa);
-        viewPager.setCurrentItem(0); // 첫탭을 기본으로 세팅
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabs)); // 뷰페이저 이동했을때 해당 위치로 이동
-
-        tabs.setupWithViewPager(viewPager);
+        bottomTabLayout.setOnNavigationPositionListener(new AHBottomNavigation.OnNavigationPositionListener() {
+            @Override public void onPositionChange(int y) {
+                // Manage the new y position
+            }
+        });
     }
+
 }

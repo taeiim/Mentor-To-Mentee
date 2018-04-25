@@ -48,7 +48,7 @@
                     android:id="@+id/id"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/colorTheme"
+                    android:backgroundTint="@color/colorPrimary"
                     android:hint="@string/prompt_id"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
@@ -65,7 +65,7 @@
                     android:id="@+id/password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/colorTheme"
+                    android:backgroundTint="@color/colorPrimary"
                     android:hint="@string/prompt_password"
                     android:imeActionId="6"
                     android:imeActionLabel="@string/action_sign_in_short"
@@ -123,7 +123,7 @@
                     android:paddingLeft="@dimen/activity_vertical_half_margin"
                     android:paddingTop="@dimen/activity_vertical_margin"
                     android:text="@string/prompt_register"
-                    android:textColor="@color/colorTheme"
+                    android:textColor="@color/colorPrimary"
                     android:textStyle="bold" />
 
             </LinearLayout>
