@@ -17,7 +17,7 @@ exports.signup = (req, res) => {
       else return res.status(400).end();
     })
     .catch(err => {
-      throw err;
+      return res.status(500).end();
     })
 };
 
@@ -38,8 +38,26 @@ exports.signin = (req, res) => {
     })
     .catch(err => {
       console.log(err);
-      
-      return err;
+      return res.status(500).end();
+    })
+};
+
+//아이디 중복체크
+exports.checkId = (req, res) => {
+  const { id } = req.body;
+  let status;
+
+  Database.query('select * from user where id = ?', [id])
+    .then(result => {
+      if(result.length === 1) {
+        return res.status(409).end();
+      } else {
+        return res.status(200).end();
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      return res.status(500).end();
     })
 };
 

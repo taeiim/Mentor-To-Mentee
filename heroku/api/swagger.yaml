@@ -10,28 +10,12 @@ tags:
   description: "Everything about Auth"
 schemes:
 - "http"
-# change -g 
-# consumes:
-# - "application/json"
-# # The following media types may be passed as output in message bodies of the API.
-# # The media type(s) consumable by the requester is specified in the Accept header field
-# # of the corresponding request.
-# # The actual media type returned will be specified in the Content-Type header field
-# # of the of the response.
-# # The default of the Accept header is json, i.e. there is not needed to
-# # set the value, bust supporting it serves extensibility.
-# produces:
-# - "application/json"
-# # securityDefinitions:
-# #   Bearer:
-# #     type: apiKey
-# #     name: Authorization
-# #     in: header
+
 paths:
   /auth/signin:
     post:
-      summary: user login
-      description: user login
+      summary: 유저 로그인
+      description: 유저 로그인
       produces: 
       - application/json
       tags: 
@@ -39,17 +23,17 @@ paths:
       parameters: 
       - in: body
         name: id
-        description: user id
+        description: 아이디
         type: string
         required: true
       - in: body
         name: pwd
-        description: user password
+        description: 패스워디
         type: string
         required: true
       responses:
-        201:
-          description: success login and return token
+        200:
+          description: 로그인 성공
           schema:
             type: object
             properties:
@@ -57,13 +41,13 @@ paths:
                 type: string
                 example: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6IiIsInVzZXJuYW1lIjoiZm9vIiwiZXhwIjoxNTA3MTQ2MzAxfQ.2ey2CYUnW9iUyyQJIYu856q9SaUxZU0FCejlA3FObPE"
         204:
-          description: fail login and return nothing
+          description: 로그인 실패
         500:
-          description: server error
+          description: 서버 오류
   /auth/signup:
     post:
-      summary: user signup
-      description: user signup
+      summary: 유저 회원가입
+      description: 유저 회원가입
       produces: 
       - application/json
       tags: 
@@ -71,33 +55,77 @@ paths:
       parameters: 
       - in: body
         name: id
-        description: user id
+        description: 아이디
         type: string
         required: true
       - in: body
         name: pwd
-        description: user password
+        description: 패스워드
         type: string
         required: true
       - in: body
         name: name
-        description: user name
+        description: 이름
         type: string
         required: true
       - in: body
         name: age
-        description: user age
+        description: 나이
         type: int
         required: true
       - in: body
         name: phone
-        description: user phone
+        description: 휴대폰 번호
         type: string
         required: true
       responses:
         201:
-          description: success signup
+          description: 회원가입 성공
         400:
-          description: fail signup
+          description: 회원가입 실패
         500:
-          description: server error
+          description: 서버 오류
+  /auth/overlap:
+    post:
+      summary: 아이디 중복 체크
+      description: 아이디 중복 체크
+      produces: 
+      - application/json
+      tags: 
+      - Authentication
+      parameters: 
+      - in: body
+        name: id
+        description: 아이디
+        type: string
+        required: true
+      responses:
+        409:
+          description: 아이디 중복
+        200:
+          description: 중복 안됨
+        500:
+          description: 서버 오류
+  /token:
+    post:
+      summary: 토큰 재발급
+      description: 토큰 재발급
+      produces: 
+      - application/json
+      tags: 
+      - Authentication
+      parameters: 
+      - in: body
+        name: authorization
+        description: 토큰
+        type: string
+        required: true
+      responses:
+        200:
+          description: 토큰 재발급
+          schema:
+            type: object
+            properties:
+              Authorization:
+                type: string
+                example: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJlbWFpbCI6IiIsInVzZXJuYW1lIjoiZm9vIiwiZXhwIjoxNTA3MTQ2MzAxfQ.2ey2CYUnW9iUyyQJIYu856q9SaUxZU0FCejlA3FObPE"
