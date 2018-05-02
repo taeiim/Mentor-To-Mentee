@@ -5,7 +5,7 @@ const controller = require('./auth.controller');
 router.route('/auth/signup').post(controller.signup);
 
 //signin
-router.route('/auth/signin').get(controller.signin);
+router.route('/auth/signin').post(controller.signin);
 
 // //find id
 // router.route('/user/account').get(controller.findId);

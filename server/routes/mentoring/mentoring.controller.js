@@ -14,7 +14,7 @@ exports.createMentoring = (req, res) => {
   const mentoring_id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
   if(checkJWT(req.headers.authorization)) {
-    res.writeHead(498, { 'Content-Type': 'application/json'});
+    res.writeHead(401, { 'Content-Type': 'application/json'});
     res.end();
   }
 
@@ -24,20 +24,29 @@ exports.createMentoring = (req, res) => {
       if(result.affectedRows === 1) {
         Database.query('insert into question values(')
         res.status(201).end();
+        return;
       } else res.status(400).end();
     })
 }
 
 exports.getMentoringList = (req, res) => {
+  if(checkJWT(req.headers.authorization)) {
+    res.writeHead(401, { 'Content-Type': 'application/json'});
+    res.end();
+  }
 
+  Database.query('select * from mentoring')
+    .then(result => {
+      
+    })
 }
 
-exports.getMentoring = (req, res) => {
-  
+exports.getMentoringDetail = (req, res) => {
+
 }
 
 exports.applyMentoring = (req, res) => {
-
+  const { question_id }
 }
 
 const checkJWT = (token) => {

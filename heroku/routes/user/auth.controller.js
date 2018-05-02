@@ -13,8 +13,8 @@ exports.signup = (req, res) => {
       return Database.query('insert into user value(?, ?, ?, ?, ?)', [id, pwd, name, age, phone]);
     })
     .then(result => {
-      if(result.affectedRows === 1) res.status(201).end();
-      else res.status(400).end();
+      if(result.affectedRows === 1) return res.status(201).end();
+      else return res.status(400).end();
     })
     .catch(err => {
       throw err;
@@ -25,18 +25,21 @@ exports.signup = (req, res) => {
 exports.signin = (req, res) => {
   const { id, pwd } = req.body;
   const JWT = makeToken(id);
-  
   let status;
 
   Database.query('select * from user where id = ? and pwd = ? ', [id, pwd])
     .then(result => {
+      
       if(result.length === 1) {
-        res.status(200).end(JSON.stringify({'Authorization' : JWT}));
+        return res.status(200).end(JSON.stringify({'Authorization' : JWT}));
+      } else {
+        return res.status(204).end();
       }
-      res.status(204).end();
     })
     .catch(err => {
-      throw err;
+      console.log(err);
+      
+      return err;
     })
 };
 

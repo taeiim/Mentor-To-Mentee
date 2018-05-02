@@ -24,8 +24,6 @@ exports.signup = (req, res) => {
 //signin
 exports.signin = (req, res) => {
   const { id, pwd } = req.body;
-  const JWT = makeToken(id);
-  
   let status;
 
   Database.query('select * from user where id = ? and pwd = ? ', [id, pwd])
