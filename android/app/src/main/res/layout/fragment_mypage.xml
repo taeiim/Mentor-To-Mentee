@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-</android.support.constraint.ConstraintLayout>
+    <RelativeLayout
+        android:id="@+id/mypage_intentRecruitingLayout"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="모집중 멘토링"
+            android:textColor="#000"
+            android:textSize="18dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text=">"
+            android:textSize="20dp"
+            />
+    </RelativeLayout>
+</LinearLayout>

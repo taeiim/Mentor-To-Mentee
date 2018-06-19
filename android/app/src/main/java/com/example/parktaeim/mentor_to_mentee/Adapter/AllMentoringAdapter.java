@@ -1,6 +1,7 @@
 package com.example.parktaeim.mentor_to_mentee.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -74,6 +75,7 @@ public class AllMentoringAdapter extends RecyclerView.Adapter<AllMentoringAdapte
             heartCntTv = (TextView) itemView.findViewById(R.id.lecture_heartCnt);
             heartBtn = (ToggleButton) itemView.findViewById(R.id.lecture_heartBtn);
             heartLayout = (LinearLayout) itemView.findViewById(R.id.lecture_heartBtnLayout);
+
         }
     }
 

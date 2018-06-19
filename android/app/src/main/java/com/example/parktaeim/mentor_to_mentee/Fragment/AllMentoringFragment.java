@@ -30,21 +30,23 @@ public class AllMentoringFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_allmentoring,container,false);
+        rootView = inflater.inflate(R.layout.fragment_allmentoring, container, false);
         setUpTabLayout();
         setUpSpinner();
         return rootView;
     }
 
     private void setUpSpinner() {
-        Spinner spinner = (Spinner)rootView.findViewById(R.id.tab1_spinner);
+        Spinner spinner = (Spinner) rootView.findViewById(R.id.tab1_spinner);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
             }
+
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
         });
 
     }
@@ -52,15 +54,15 @@ public class AllMentoringFragment extends Fragment {
     private void setUpTabLayout() {
         ViewPager viewPager = (ViewPager) rootView.findViewById(R.id.allmentoring_viewPager);
         MyPagerAdapter adapter = new MyPagerAdapter(getChildFragmentManager());
-        adapter.addElement( "전체", new AllMentoringRecyclerFragment());
-        adapter.addElement( "모바일", new AllMentoringRecyclerFragment());
-        adapter.addElement( "웹", new AllMentoringRecyclerFragment());
-        adapter.addElement( "데이터베이스", new AllMentoringRecyclerFragment());
-        adapter.addElement( "서버", new AllMentoringRecyclerFragment());
-        adapter.addElement( "보안", new AllMentoringRecyclerFragment());
-        adapter.addElement( "머신러닝", new AllMentoringRecyclerFragment());
-        adapter.addElement( "게임", new AllMentoringRecyclerFragment());
-        adapter.addElement( "네트워크", new AllMentoringRecyclerFragment());
+        adapter.addElement("전체", new AllMentoringRecyclerFragment());
+        adapter.addElement("모바일", new AllMentoringRecyclerFragment());
+        adapter.addElement("웹", new AllMentoringRecyclerFragment());
+        adapter.addElement("데이터베이스", new AllMentoringRecyclerFragment());
+        adapter.addElement("서버", new AllMentoringRecyclerFragment());
+        adapter.addElement("보안", new AllMentoringRecyclerFragment());
+        adapter.addElement("머신러닝", new AllMentoringRecyclerFragment());
+        adapter.addElement("게임", new AllMentoringRecyclerFragment());
+        adapter.addElement("네트워크", new AllMentoringRecyclerFragment());
 
         viewPager.setAdapter(adapter);
         TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.allmentoring_tabLayout);

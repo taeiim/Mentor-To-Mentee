@@ -22,6 +22,9 @@
         <activity
             android:name=".Activity.SignInActivity"
             android:label="@string/title_activity_sign_in"/>
+        <activity android:name=".Activity.MypageRecruitingActivity"/>
+        <activity android:name=".Activity.MypageRecruitingDetailActivity"/>
+        <activity android:name=".Activity.MentoringDetailActivity"/>
     </application>
 
 </manifest>

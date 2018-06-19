@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:background="@color/colorWhite"
+    >
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profileImg"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/img_sample"
+        android:scaleType="centerCrop"
+        android:layout_centerVertical="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="박태임"
+        android:layout_toRightOf="@+id/profileImg"
+        android:textSize="12dp"
+        android:textColor="@color/Black"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="8dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12dp"
+        android:textColor="@color/Black"
+        android:text="거절"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/rightArrow"/>
+
+    <ImageView
+        android:id="@+id/rightArrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_arror_right"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="8dp"
+        android:tint="@color/Gray"/>
+</RelativeLayout>

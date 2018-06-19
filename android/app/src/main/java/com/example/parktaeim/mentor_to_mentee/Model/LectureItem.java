@@ -9,12 +9,14 @@ public class LectureItem {
     private String lectureDesc;
     private int lectureEntryCnt;
     private int lectureHeartCnt;
+    private String lectureDeadLine;
 
-    public LectureItem(String lectureTitle, String lectureDesc, int lectureEntryCnt, int lectureHeartCnt) {
+    public LectureItem(String lectureTitle, String lectureDesc, int lectureEntryCnt, int lectureHeartCnt, String lectureDeadLine) {
         this.lectureTitle = lectureTitle;
         this.lectureDesc = lectureDesc;
         this.lectureEntryCnt = lectureEntryCnt;
         this.lectureHeartCnt = lectureHeartCnt;
+        this.lectureDeadLine = lectureDeadLine;
     }
 
     public String getLectureTitle() {
@@ -47,5 +49,13 @@ public class LectureItem {
 
     public void setLectureHeartCnt(int lectureHeartCnt) {
         this.lectureHeartCnt = lectureHeartCnt;
+    }
+
+    public String getLectureDeadLine() {
+        return lectureDeadLine;
+    }
+
+    public void setLectureDeadLine(String lectureDeadLine) {
+        this.lectureDeadLine = lectureDeadLine;
     }
 }

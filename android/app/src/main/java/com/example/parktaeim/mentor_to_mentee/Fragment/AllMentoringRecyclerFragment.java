@@ -1,5 +1,6 @@
 package com.example.parktaeim.mentor_to_mentee.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,9 +13,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 
+import com.example.parktaeim.mentor_to_mentee.Activity.MentoringDetailActivity;
+import com.example.parktaeim.mentor_to_mentee.Activity.MypageRecruitingActivity;
+import com.example.parktaeim.mentor_to_mentee.Activity.MypageRecruitingDetailActivity;
 import com.example.parktaeim.mentor_to_mentee.Adapter.AllMentoringAdapter;
 import com.example.parktaeim.mentor_to_mentee.Model.LectureItem;
 import com.example.parktaeim.mentor_to_mentee.R;
+import com.example.parktaeim.mentor_to_mentee.RecyclerViewClickListener;
 
 import java.util.ArrayList;
 
@@ -43,11 +48,24 @@ public class AllMentoringRecyclerFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         for(int i=0;i<10;i++){
-            lectureItemArrayList.add(new LectureItem("안드로이드 강의","ㄴ이ㅏ런이ㅏ러이나렁니ㅏ렁니ㅏ러",3,29));
+            lectureItemArrayList.add(new LectureItem("안드로이드 강의","ㄴ이ㅏ런이ㅏ러이나렁니ㅏ렁니ㅏ러",3,29, "sdlkfj"));
 
         }
 
         AllMentoringAdapter adapter = new AllMentoringAdapter(lectureItemArrayList,getContext());
         recyclerView.setAdapter(adapter);
+
+        recyclerView.addOnItemTouchListener(new RecyclerViewClickListener(getContext(), recyclerView, new RecyclerViewClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent intent = new Intent(getActivity(), MentoringDetailActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onLongItemClick(View view, int position) {
+
+            }
+        }));
     }
 }

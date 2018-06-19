@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/item_height"
+    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+    android:layout_marginRight="@dimen/activity_horizontal_margin"
+    android:layout_marginTop="@dimen/activity_vertical_margin"
+    android:orientation="horizontal">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/lecture_cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/White"
+        app:cardCornerRadius="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/lecture_imgView"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:src="@drawable/img_sample"/>
+
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:orientation="vertical"
+                android:paddingTop="16dp"
+                android:paddingBottom="12dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <TextView
+                    android:id="@+id/recruitingLecture_titleTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="@string/prompt_empty_title"
+                    android:textColor="@color/Black"
+                    android:textSize="@dimen/item_text_title" />
+
+                <TextView
+                    android:id="@+id/recruitingLecture_descTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/recruitingLecture_titleTv"
+                    android:layout_marginTop="2dp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text="@string/prompt_empty_description"
+                    android:textSize="@dimen/item_text_description" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_recruitment_number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="마감일"
+                        android:textColor="@color/Black"
+                        android:textSize="11dp" />
+
+                    <TextView
+                        android:id="@+id/recruitingLecture_deadLineTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/tv_recruitment_number"
+                        android:paddingLeft="6dp"
+                        android:text="2018.04.24."
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="11dp"
+                        android:textStyle="bold" />
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="신청인원"
+                            android:textColor="@color/Black"
+                            android:textSize="11dp" />
+
+                        <TextView
+                            android:id="@+id/recruitingLecture_enrollNumTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingLeft="6dp"
+                            android:text="2명"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="11dp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:background="@color/colorWhite"
+        app:contentInsetStart="0dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16dp"
+                android:src="@drawable/ic_back" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="모집중 멘토링"
+                android:textColor="#000"
+                android:textSize="15dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_alignParentBottom="true"
+                android:background="#E6E6E6" />
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusableInTouchMode="true">
+
+                <ImageView
+                    android:layout_width="160dp"
+                    android:layout_height="100dp"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/img_sample"
+                    android:elevation="1dp" />
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    android:minHeight="200dp"
+                    app:cardBackgroundColor="@color/colorWhite"
+                    app:cardCornerRadius="@dimen/recruiting_detail_card_radius"
+                    app:cardElevation="0dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="50dp"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:paddingBottom="22dp"
+                        android:paddingLeft="32dp"
+                        android:paddingRight="32dp"
+                        android:paddingTop="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="2dp"
+                            android:text="안드로이드 멘토링 합니다~!"
+                            android:textColor="#000"
+                            android:textSize="18dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:paddingTop="8dp"
+                            android:text="이ㅏ어ㅣㅏㅓㅏㅓㅣ나ㅓ아ㅓ리나ㅓㄴ아ㅓ라어리ㅏㅓ리아ㅓ리ㅓ아ㅓ라ㅣ어리ㅏ라ㅣ어리ㅓ아ㅓ라ㅣ어리라리ㅏㅇ러ㅏㅣ어라ㅣ얼이ㅏㅓㄹ어러리ㅏ얼이ㅏㅓ리아ㅓ리ㅏㅓㅣㅏ어라ㅣ어ㅏ어ㅏ어ㅣㅏㅓㅏ이ㅓ리ㅏ어리러ㅏ어ㅏㅣㅓㄹ이ㅏ러아ㅣ러이ㅏㄹ"
+                            android:textSize="12dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="마감일"
+                                android:textColor="#000"
+                                android:textSize="13dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingLeft="8dp"
+                                android:text="2018.03.23"
+                                android:textColor="@color/colorPrimary"
+                                android:textSize="13dp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+            </RelativeLayout>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:layout_marginTop="16dp"
+                app:cardBackgroundColor="@color/colorWhite"
+                app:cardCornerRadius="@dimen/recruiting_detail_card_radius"
+                app:cardElevation="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:padding="12dp"
+                    android:layout_marginTop="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="신청현황"
+                        android:textColor="#000"
+                        android:textSize="16dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="8dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="신청인원"
+                                android:textColor="#000"
+                                android:textSize="14dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="8dp"
+                                android:text="34"
+                                android:textColor="#000"
+                                android:textSize="15dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="신청인원"
+                                android:textColor="#000"
+                                android:textSize="14dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="8dp"
+                                android:text="34"
+                                android:textColor="#000"
+                                android:textSize="15dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="신청인원"
+                                android:textColor="#000"
+                                android:textSize="14dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="8dp"
+                                android:text="34"
+                                android:textColor="#000"
+                                android:textSize="15dp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="신청인원"
+                                android:textColor="#000"
+                                android:textSize="14dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="8dp"
+                                android:text="34"
+                                android:textColor="#000"
+                                android:textSize="15dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recruitingPersonRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="1380dp"
+                android:layout_marginTop="16dp"
+                android:background="@color/colorWhite">
+
+            </android.support.v7.widget.RecyclerView>
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>
