@@ -1,60 +1,84 @@
 package com.example.parktaeim.mentor_to_mentee.Activity;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.parktaeim.mentor_to_mentee.API.Client;
+import com.example.parktaeim.mentor_to_mentee.API.InfRetrofit;
 import com.example.parktaeim.mentor_to_mentee.R;
+import com.example.parktaeim.mentor_to_mentee.ServerCode;
 
 import java.util.HashMap;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 //서버 접속 레트로핏 남음 attemptRegister 변경예정, 툴바에 홈버튼
 public class SignUpActivity extends AppCompatActivity {
-
+    private final String TAG = "SignUpActivity";
     private Toolbar toolbar;
     private TextView toolbar_title;
-    private Button btnSignUp;
+    private Button btnSignUp, btnOverlap;
     //et : EditText
-    private EditText etName, etId, etPw, etPwConfirm, etPhoneCall, etEmail, etAge, etJob;
-    private HashMap<String, EditText> editTextHashMap;
-    // 입력된 데이터들을 문자열로 담아둘 POJO 객체
+    private EditText etId, etPw, etPwConfirm, etName, etAge, etPhone;
+    private HashMap<String, EditText> etMap;
     private SignUp signUp;
-    private RegisterTask registerTask = null;
+    private boolean isIdOverlapChecked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        etName = (EditText) findViewById(R.id.etName);
+
         etId = findViewById(R.id.etId);
         etPw = findViewById(R.id.etPw);
         etPwConfirm = findViewById(R.id.etPwConfirm);
-        etPhoneCall = findViewById(R.id.etPhoneCall);
-        etEmail = findViewById(R.id.etEmail);
+        etName = findViewById(R.id.etName);
         etAge = findViewById(R.id.etAge);
-        etJob = findViewById(R.id.etJob);
+        etPhone = findViewById(R.id.etPhoneCall);
 
+        etMap = new HashMap<>();
+        etMap.put(strSignUp.ID, etId);
+        etMap.put(strSignUp.PW, etPw);
+        etMap.put(strSignUp.PWCONFIRM, etPwConfirm);
+        etMap.put(strSignUp.NAME, etName);
+        etMap.put(strSignUp.AGE, etAge);
+        etMap.put(strSignUp.PHONE, etPhone);
 
-        editTextHashMap = new HashMap<>();
-        editTextHashMap.put(strSignUp.NAME, etName);
-        editTextHashMap.put(strSignUp.ID, etId);
-        editTextHashMap.put(strSignUp.PW, etPw);
-        editTextHashMap.put(strSignUp.PWCONFIRM, etPwConfirm);
-        editTextHashMap.put(strSignUp.PHONECALL, etPhoneCall);
-        editTextHashMap.put(strSignUp.EMAIL, etEmail);
-        editTextHashMap.put(strSignUp.AGE, etAge);
-        editTextHashMap.put(strSignUp.JOB, etJob);
 
         btnSignUp = findViewById(R.id.btnSignUp);
+
+        btnSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!isIdOverlapChecked) {
+                    etId.requestFocus();
+                    etId.setError("아이디 중복 체크를 진행해주세요");
+                } else {
+                    if (isSignUpDataVaild()) {
+                        attemptSignUp(etMap.get(strSignUp.ID).getText().toString(),
+                                etMap.get(strSignUp.PW).getText().toString(),
+                                etMap.get(strSignUp.NAME).getText().toString(),
+                                Integer.parseInt(etMap.get(strSignUp.AGE).getText().toString()),
+                                etMap.get(strSignUp.PHONE).getText().toString());
+                    }
+                }
+            }
+        });
+
+        btnOverlap = findViewById(R.id.btnOverlap);
+
 
         toolbar = findViewById(R.id.toolbar);
         toolbar_title = findViewById(R.id.toolbar_title);
@@ -66,22 +90,28 @@ public class SignUpActivity extends AppCompatActivity {
         actionBar.setDisplayShowTitleEnabled(false); //액션바에 표시되는 제목의 표시유무를 설정
         actionBar.setDisplayShowHomeEnabled(false); // 액션바 왼쪽의 <- 버튼
 
-        btnSignUp.setOnClickListener(new View.OnClickListener() {
+        btnOverlap = findViewById(R.id.btnOverlap);
+
+        btnOverlap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isRegisterDataVaild()) {
-                    attemptRegister();
+                if (isIdVaild(etId.getText().toString())) {
+                    isIdOverlap(etId.getText().toString());
+                } else {
+                    etId.requestFocus();
+                    etId.setError(getString(R.string.error_invalid_id));
                 }
             }
         });
+
+
     }
 
-    private boolean isEmailValid(String email) {
-        return email.contains("@");
-    }
+    //4글자 이상
     private boolean isIdVaild(String id) {
         return id.length() > 3;
     }
+
     private boolean isPasswordValid(String password) {
         return password.length() > 4;
     }
@@ -92,85 +122,50 @@ public class SignUpActivity extends AppCompatActivity {
      *
      * @return boolean
      */
-    private boolean isRegisterDataVaild() {
+    private boolean isSignUpDataVaild() {
         //etName, etId, etPw, etPwConfirm, etPhoneCall, etEmail, etAge, etJob
         boolean isError = false;
         View focusView = null;
         // Reset errors.
-        for (String key : editTextHashMap.keySet()) {
-            editTextHashMap.get(key).setError(null);
+        for (String key : etMap.keySet()) {
+            etMap.get(key).setError(null);
         }
-        signUp = new SignUp(editTextHashMap.get(strSignUp.NAME).getText().toString(),
-                editTextHashMap.get(strSignUp.ID).getText().toString(),
-                editTextHashMap.get(strSignUp.PW).getText().toString(),
-                editTextHashMap.get(strSignUp.PWCONFIRM).getText().toString(),
-                editTextHashMap.get(strSignUp.PHONECALL).getText().toString(),
-                editTextHashMap.get(strSignUp.EMAIL).getText().toString(),
-                editTextHashMap.get(strSignUp.AGE).getText().toString(),
-                editTextHashMap.get(strSignUp.JOB).getText().toString());
+
+        signUp = new SignUp(etMap.get(strSignUp.ID).getText().toString(),
+                etMap.get(strSignUp.PW).getText().toString(),
+                etMap.get(strSignUp.PWCONFIRM).getText().toString(),
+                etMap.get(strSignUp.NAME).getText().toString(),
+                Integer.parseInt(etMap.get(strSignUp.AGE).getText().toString()),
+                etMap.get(strSignUp.PHONE).getText().toString());
+
 
         if (TextUtils.isEmpty(signUp.getName())) {
-            editTextHashMap.get(strSignUp.NAME).setError(getString(R.string.error_no_input_name));
-            focusView = editTextHashMap.get(strSignUp.NAME);
+            etMap.get(strSignUp.NAME).setError(getString(R.string.error_no_input_name));
+            focusView = etMap.get(strSignUp.NAME);
             isError = true;
-        }
-
-        else if (TextUtils.isEmpty(signUp.getId())) {
-
-            editTextHashMap.get(strSignUp.ID).setError(getString(R.string.error_no_input_id));
-            focusView = editTextHashMap.get(strSignUp.ID);
+        } else if (TextUtils.isEmpty(signUp.getPwd())) {
+            etMap.get(strSignUp.PW).setError(getString(R.string.error_no_input_pw));
+            focusView = etMap.get(strSignUp.PW);
             isError = true;
-        } else if (!isIdVaild(signUp.getId())) {
-            editTextHashMap.get(strSignUp.ID).setError(getString(R.string.error_invalid_id));
-            focusView = editTextHashMap.get(strSignUp.ID);
+        } else if (!isPasswordValid(signUp.getPwd())) {
+            etMap.get(strSignUp.PW).setError(getString(R.string.error_invalid_password));
+            focusView = etMap.get(strSignUp.PW);
             isError = true;
-        }
-
-        else if (TextUtils.isEmpty(signUp.getPw())) {
-            editTextHashMap.get(strSignUp.PW).setError(getString(R.string.error_no_input_pw));
-            focusView = editTextHashMap.get(strSignUp.PW);
+        } else if (TextUtils.isEmpty(signUp.getPwdConfirm())) {
+            etMap.get(strSignUp.PWCONFIRM).setError(getString(R.string.error_no_input_pwConfirm));
+            focusView = etMap.get(strSignUp.PWCONFIRM);
             isError = true;
-        } else if (!isPasswordValid(signUp.getPw())) {
-            editTextHashMap.get(strSignUp.PW).setError(getString(R.string.error_invalid_password));
-            focusView = editTextHashMap.get(strSignUp.PW);
+        } else if (!signUp.getPwd().equals(signUp.getPwdConfirm())) {
+            etMap.get(strSignUp.PWCONFIRM).setError(getString(R.string.error_no_match_pwConfirm));
+            focusView = etMap.get(strSignUp.PWCONFIRM);
             isError = true;
-        }
-
-        else if (TextUtils.isEmpty(signUp.getPwConfirm())) {
-            editTextHashMap.get(strSignUp.PWCONFIRM).setError(getString(R.string.error_no_input_pwConfirm));
-            focusView = editTextHashMap.get(strSignUp.PWCONFIRM);
+        } else if (!TextUtils.isEmpty(signUp.getPhone())) {
+            etMap.get(strSignUp.PHONE).setError(getString(R.string.error_no_input_phoneCall));
+            focusView = etMap.get(strSignUp.PHONE);
             isError = true;
-        } else if (!signUp.getPw().equals(signUp.getPwConfirm())) {
-            editTextHashMap.get(strSignUp.PWCONFIRM).setError(getString(R.string.error_no_match_pwConfirm));
-            focusView = editTextHashMap.get(strSignUp.PWCONFIRM);
-            isError = true;
-        }
-
-        else if (TextUtils.isEmpty(signUp.getPhoneCall())) {
-            editTextHashMap.get(strSignUp.PHONECALL).setError(getString(R.string.error_no_input_phoneCall));
-            focusView = editTextHashMap.get(strSignUp.PHONECALL);
-            isError = true;
-        }
-
-        else if (TextUtils.isEmpty(signUp.getEmail())) {
-            editTextHashMap.get(strSignUp.EMAIL).setError(getString(R.string.error_no_input_email));
-            focusView = editTextHashMap.get(strSignUp.EMAIL);
-            isError = true;
-        } else if (!isEmailValid(signUp.getEmail())) {
-            editTextHashMap.get(strSignUp.EMAIL).setError(getString(R.string.error_invalid_email));
-            focusView = editTextHashMap.get(strSignUp.EMAIL);
-            isError = true;
-        }
-
-        else if (TextUtils.isEmpty(signUp.getAge())) {
-            editTextHashMap.get(strSignUp.AGE).setError(getString(R.string.error_no_input_age));
-            focusView = editTextHashMap.get(strSignUp.AGE);
-            isError = true;
-        }
-
-        else if (TextUtils.isEmpty(signUp.getJob())) {
-            editTextHashMap.get(strSignUp.JOB).setError(getString(R.string.error_no_input_job));
-            focusView = editTextHashMap.get(strSignUp.JOB);
+        } else if (!TextUtils.isEmpty(etMap.get(strSignUp.AGE).getText().toString())) {
+            etMap.get(strSignUp.AGE).setError(getString(R.string.error_no_input_age));
+            focusView = etMap.get(strSignUp.AGE);
             isError = true;
         }
 
@@ -183,98 +178,116 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
-    public void attemptRegister() {
-        registerTask = new RegisterTask(signUp);
-        registerTask.execute((Void) null);
+    private void isIdOverlap(String id) {
+        InfRetrofit insRetrofit = Client.getInstance().create(InfRetrofit.class);
+        Call<Void> call = insRetrofit.idOverlap(id);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                switch (response.code()) {
+                    case ServerCode.OVERLAP_SUCCESS:
+                        Toast.makeText(SignUpActivity.this, "사용할 수 있는 아이디입니다", Toast.LENGTH_SHORT).show();
+                        isIdOverlapChecked = true;
+                    case ServerCode.OVERLAP_FAILED:
+                        Toast.makeText(SignUpActivity.this, "사용할 수 없는 아이디입니다", Toast.LENGTH_SHORT).show();
+                        isIdOverlapChecked = false;
+                        break;
+                    case ServerCode.OVERLAP_SERER_ERROR:
+                        Toast.makeText(SignUpActivity.this, "서버와의 통신에 문제가 발생했습니다. 잠시후 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                        isIdOverlapChecked = false;
+                        break;
+                }
+                Log.i(TAG, "통신완료");
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), getString(R.string.prompt_server_connect_error) + t.getMessage(), Toast.LENGTH_LONG).show();
+                Log.i("SignUp", "서버 불러오기 실패 : " + t.getMessage());
+                Log.i("SignUp", "요청 메시지 : " + call.request());
+            }
+        });
     }
 
+    private void attemptSignUp(String id, String pwd, String name, int age, String phone) {
+
+        InfRetrofit InsRetrofit = Client.getInstance().create(InfRetrofit.class);
+        Call<Void> call = InsRetrofit.signUp(id, pwd, name, age, phone);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                switch (response.code()) {
+                    case ServerCode.SIGNUP_RES_SUCCESS:
+                        // 성공
+//                        setJWTToken(response.body().getAsString());
+                        Toast.makeText(getApplicationContext(), getString(R.string.prompt_server_success), Toast.LENGTH_SHORT).show();
+                        Log.i("signUp", "가입 성공");
+                        SignUpActivity.this.finish();
+                        break;
+                    case ServerCode.SIGNUP_RES_OVERLAP:
+                        // ID 중복
+                        Toast.makeText(getApplicationContext(), getString(R.string.prompt_server_id_overlap), Toast.LENGTH_SHORT).show();
+                        Log.i("signUp", "아이디 중복");
+                        etId.requestFocus();
+                        break;
+                    case 400:
+                        Toast.makeText(SignUpActivity.this, "회원가입에 실패했습니다", Toast.LENGTH_SHORT).show();
+                    default:
+                        Toast.makeText(getApplicationContext(), getString(R.string.prompt_server_error + response.code()), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            // 요청한 API 서버의 다운 또는 DB Query 중 오류 등와 같은 서버의 비정상적인 동작으로 인해 요청에 대한 응답을 받지 못하는 경우
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), getString(R.string.prompt_server_connect_error) + t.getMessage(), Toast.LENGTH_LONG).show();
+                Log.d("SignUp", "서버 불러오기 실패 : " + t.getMessage());
+                Log.d("SignUp", "요청 메시지 : " + call.request());
+            }
+        });
+    }
+
+
     class SignUp {
-        private final String name, id, pw, pwConfirm, phoneCall, email, age, job;
+        private int age;
+        private String id, pwd, pwdConfirm, name, phone;
 
-        public SignUp(String name, String id, String pw, String pwConfirm, String phoneCall, String email, String age, String job) {
-            this.name = name;
+        public SignUp(String id, String pwd, String pwdConfirm, String name, int age, String phone) {
             this.id = id;
-            this.pw = pw;
-            this.pwConfirm = pwConfirm;
-            this.phoneCall = phoneCall;
-            this.email = email;
+            this.pwd = pwd;
+            this.pwdConfirm = pwdConfirm;
+            this.name = name;
             this.age = age;
-            this.job = job;
-        }
-
-        public String getName() {
-            return name;
+            this.phone = phone;
         }
 
         public String getId() {
             return id;
         }
 
-        public String getPw() {
-            return pw;
+        public String getPwd() {
+            return pwd;
         }
 
-        public String getPwConfirm() {
-            return pwConfirm;
+        public String getPwdConfirm() {
+            return pwdConfirm;
         }
 
-        public String getPhoneCall() {
-            return phoneCall;
+        public String getName() {
+            return name;
         }
 
-        public String getEmail() {
-            return email;
-        }
-
-        public String getAge() {
+        public int getAge() {
             return age;
         }
 
-        public String getJob() {
-            return job;
+        public String getPhone() {
+            return phone;
         }
     }
 
     private class strSignUp {
-        static final String NAME = "etName", ID = "etId", PW = "etPw", PWCONFIRM = "etPwConfirm", PHONECALL = "etPhoneCall", EMAIL = "etEmail", AGE = "etAge", JOB = "etJob";
-    }
-    public class RegisterTask extends AsyncTask<Void, Void, Boolean> {
-        SignUp signUp;
-
-        public RegisterTask(SignUp signUp) {
-            this.signUp = signUp;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... voids) {
-//            try {
-//                Map<String, String> params =
-//            }catch () {
-//                return false;
-//            }
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            registerTask = null;
-
-            if (success) {
-                Snackbar.make(btnSignUp, getString(R.string.success_register), Snackbar.LENGTH_SHORT).show();
-            } else {
-                Snackbar.make(btnSignUp, getString(R.string.fail_register), Snackbar.LENGTH_INDEFINITE).setAction(android.R.string.ok, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                }).show();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            registerTask = null;
-        }
+        static final String ID = "etId", PW = "etPw", PWCONFIRM = "etPwConfirm", NAME = "etName", AGE = "etAge", PHONE = "etPhone";
     }
 
 }

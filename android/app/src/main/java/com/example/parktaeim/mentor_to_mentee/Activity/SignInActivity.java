@@ -2,10 +2,10 @@ package com.example.parktaeim.mentor_to_mentee.Activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,35 +16,31 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.parktaeim.mentor_to_mentee.API.Client;
+import com.example.parktaeim.mentor_to_mentee.API.InfRetrofit;
+import com.example.parktaeim.mentor_to_mentee.Model.JWTModel;
 import com.example.parktaeim.mentor_to_mentee.R;
+import com.example.parktaeim.mentor_to_mentee.ServerCode;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * A login screen that offers login via Id/password.
  */
 public class SignInActivity extends AppCompatActivity {
-    private TextView registerTV;
-    /**
-     * READ_CONTACTS 권한 요청 구별을 위한 Id (Id to identity READ_CONTACTS permission request)
-     */
-    private static final int REQUEST_READ_CONTACTS = 0;
+    private static final String TAG_TOKEN = "TOKEN";
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private UserLoginTask mAuthTask = null;
+    private TextView registerTV;
+    private Retrofit retrofit = null;
 
     // UI references.
     private AutoCompleteTextView mIDView;
     private EditText mPasswordView;
-    private View mLoginFormView;
     private CheckBox autoLoginBox;
 
     private SharedPreferences pref;
@@ -83,24 +79,21 @@ public class SignInActivity extends AppCompatActivity {
         });
 
         registerTV = (TextView) findViewById(R.id.register_tv);
-
         registerTV.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SignUpActivity.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                Intent intent = new Intent(getApplicationContext(), SignUpActivity.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
             }
         });
 
-        Button mIDSignInButton = (Button) findViewById(R.id.sign_in_button);
-        mIDSignInButton.setOnClickListener(new OnClickListener() {
+        Button signInButton = (Button) findViewById(R.id.sign_in_button);
+        signInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
             }
         });
-
-        mLoginFormView = findViewById(R.id.login_form);
 
         setCheckBox();
     }
@@ -113,7 +106,7 @@ public class SignInActivity extends AppCompatActivity {
         autoLoginBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
+                if (isChecked) {
                     String ID = mIDView.getText().toString();
                     String PW = mPasswordView.getText().toString();
 
@@ -121,7 +114,7 @@ public class SignInActivity extends AppCompatActivity {
                     editor.putString("PW", PW);
                     editor.putBoolean("Auto_Login_enabled", true);
                     editor.commit();
-                }else{
+                } else {
                     editor.clear();
                     editor.commit();
                 }
@@ -153,8 +146,8 @@ public class SignInActivity extends AppCompatActivity {
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
+        if (retrofit == null) {
+            retrofit = Client.getInstance();
         }
 
         // Reset errors.
@@ -162,21 +155,21 @@ public class SignInActivity extends AppCompatActivity {
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String Id = mIDView.getText().toString();
+        String id = mIDView.getText().toString();
         String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
+        if (TextUtils.isEmpty(password)) {
+            mPasswordView.setError(getString(R.string.error_no_input_pw));
             focusView = mPasswordView;
             cancel = true;
         }
 
         // Check for a valid Id address.
-        if (TextUtils.isEmpty(Id)) {
+        if (TextUtils.isEmpty(id)) {
             mIDView.setError(getString(R.string.error_no_input_id));
             focusView = mIDView;
             cancel = true;
@@ -187,73 +180,57 @@ public class SignInActivity extends AppCompatActivity {
             // form field with an error.
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            mAuthTask = new UserLoginTask(Id, password);
-            mAuthTask.execute((Void) null);
+            // attempt login
+            signIn(id, password);
         }
     }
 
-    private boolean isIdVaild(String id) {
-        return id.length() > 4;
-    }
-    private boolean isPasswordValid(String password) {
-        return password.length() > 4;
-    }
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    private void signIn(final String id, final String pwd) {
+        InfRetrofit InsRetrofit = this.retrofit.create(InfRetrofit.class);
+        Call<JWTModel> call = InsRetrofit.signIn(id, pwd);
+        call.enqueue(new Callback<JWTModel>() {
 
-        private final String mEmail;
-        private final String mPassword;
-
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
+            @Override
+            public void onResponse(Call<JWTModel> call, Response<JWTModel> response) {
+                switch (response.code()) {
+                    case ServerCode.SIGNIN_RES_SUCCESS:
+                        String token = null;
+                        if (response.body() != null) {
+                            token = response.body().getAuthorization();
+                        }
+                        setJWTToken(token);
+                        Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
+                        Log.i("SignIn", "로그인 성공 " + token);
+                        SignInActivity.this.finish();
+                        break;
+                    case ServerCode.SIGNIN_RES_NO_ACCOUNT:
+                        Toast.makeText(SignInActivity.this, "이미 존재하는 아이디입니다.", Toast.LENGTH_SHORT).show();
+                        Log.i("SignIn", "null response \n response message : " + response.message() + "\n response code : " + response.code() + " errorBody : " + response.errorBody());
+                        break;
+                    default:
+                        Log.i("SignIn", "failed get data\nresponse message : " + response.message() + "\nresponse code : " + response.code());
+                        break;
                 }
             }
 
-            // TODO: register the new account here.
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-
-            if (success) {
-                finish();
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
+            @Override
+            public void onFailure(Call<JWTModel> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), getString(R.string.prompt_server_connect_error) + t.getMessage(), Toast.LENGTH_LONG).show();
+                Log.d("SignIn", "서버 불러오기 실패 : " + t.getMessage());
+                Log.d("SignIn", "요청 메시지 : " + call.request());
+                Log.d("SignIn", t.getStackTrace().toString());
+                Log.d("SignIn", t.getCause().toString());
             }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-        }
+        });
     }
-}
 
+    private void setJWTToken(String token) {
+        pref = getSharedPreferences("pref", MODE_PRIVATE);
+        editor = pref.edit();
+
+        editor.putString(TAG_TOKEN, token);
+        editor.apply(); // commit()
+    }
+
+}

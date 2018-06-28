@@ -5,14 +5,14 @@
         <shape>
             <padding android:bottom="4dp" android:left="8dp" android:right="8dp" android:top="4dp" />
             <gradient android:angle="270" android:endColor="@color/colorPrimary" android:startColor="@color/colorPrimary" />
-            <corners android:radius="40dp"/>
+            <corners android:radius="8dp"/>
         </shape>
     </item>
     <item android:state_pressed="false">
         <shape>
             <padding android:bottom="4dp" android:left="8dp" android:right="8dp" android:top="4dp" />
             <solid android:color="@color/colorPrimary" />
-            <corners android:bottomLeftRadius="40dp" android:bottomRightRadius="40dp" android:topLeftRadius="40dp" android:topRightRadius="40dp" />
+            <corners android:radius="8dp" />
         </shape>
     </item>
 </selector>

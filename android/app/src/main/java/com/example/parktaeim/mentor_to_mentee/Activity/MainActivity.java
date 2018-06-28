@@ -1,5 +1,6 @@
 package com.example.parktaeim.mentor_to_mentee.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -26,8 +27,8 @@ public class MainActivity extends AppCompatActivity {
 
         initToolbar();
         initTabPager();
-//        Intent intent = new Intent(getApplicationContext(), SignInActivity.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//        startActivity(intent);
+        Intent intent = new Intent(getApplicationContext(), CreateMentoringActivity.class).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(intent);
     }
 
     private void initToolbar() {

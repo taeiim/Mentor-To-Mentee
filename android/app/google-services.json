@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "317940555971",
+    "firebase_url": "https://mentortomentee-c26a8.firebaseio.com",
+    "project_id": "mentortomentee-c26a8",
+    "storage_bucket": "mentortomentee-c26a8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:317940555971:android:6a31c478ab15b4ff",
+        "android_client_info": {
+          "package_name": "com.example.parktaeim.mentor_to_mentee"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "317940555971-fs7t6it2kqteuioc4121s2jtutpmmt3m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.parktaeim.mentor_to_mentee",
+            "certificate_hash": "cacd5521067bca97434a00b85717c80a9197b960"
+          }
+        },
+        {
+          "client_id": "317940555971-ecb7kr16cl6nf06tn3q65pst4491p1sg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCERDYLmL8BqU3gdj5grsA6mfJjUirH_lo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "317940555971-ecb7kr16cl6nf06tn3q65pst4491p1sg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
