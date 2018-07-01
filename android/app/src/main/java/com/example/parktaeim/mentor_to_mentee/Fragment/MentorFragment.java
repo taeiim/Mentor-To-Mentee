@@ -19,6 +19,13 @@ public class MentorFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_mentor,container,false);
+
+        setUpCardView();
+
         return rootView;
+    }
+
+    private void setUpCardView() {
+
     }
 }
