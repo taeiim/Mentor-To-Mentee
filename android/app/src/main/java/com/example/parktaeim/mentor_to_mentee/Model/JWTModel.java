@@ -4,15 +4,31 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class JWTModel {
-    @SerializedName("Authorization")
+    @SerializedName("token")
     @Expose
-    private String authorization;
+    private String token;
 
-    public JWTModel(String authorization) {
-        this.authorization = authorization;
+    @SerializedName("refreshToken")
+    private String refreshToken;
+
+    public JWTModel(String token, String refreshToken) {
+        this.token = token;
+        this.refreshToken = refreshToken;
     }
 
-    public String getAuthorization() {
-        return authorization;
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 }

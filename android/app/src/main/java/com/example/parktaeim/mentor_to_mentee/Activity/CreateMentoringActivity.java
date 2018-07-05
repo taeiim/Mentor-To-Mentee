@@ -182,6 +182,9 @@ public class CreateMentoringActivity extends AppCompatActivity {
                     case ServerCode.CREATE_MENTORING_SERER_ERROR:
                         Toast.makeText(CreateMentoringActivity.this, "서버에 문제가 발생했습니다", Toast.LENGTH_LONG).show();
                         break;
+                        default:
+                            Toast.makeText(getApplicationContext(), "개설 중 문제 발생 코드 : " + response.code(), Toast.LENGTH_SHORT).show();
+                            Log.d("CreateMentoringActivity", "onResponse: " + response.code());
                 }
             }
 

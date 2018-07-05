@@ -15,7 +15,6 @@ import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
-import retrofit2.http.Query;
 
 public interface InfRetrofit {
     @FormUrlEncoded
@@ -38,7 +37,7 @@ public interface InfRetrofit {
     @FormUrlEncoded
     @POST(Url.SIGN_UP_OVERLAP_URL)
     Call<Void> idOverlap(
-            @Query("id") String id
+            @Field("id") String id
     );
 
     @GET(Url.REQUEST_TOKEN)

@@ -34,6 +34,7 @@ import retrofit2.Retrofit;
  */
 public class SignInActivity extends AppCompatActivity {
     private static final String TAG_TOKEN = "TOKEN";
+    private static final String TAG_REFRESH = "REFRESH";
 
     private TextView registerTV;
     private Retrofit retrofit = null;
@@ -195,17 +196,19 @@ public class SignInActivity extends AppCompatActivity {
             public void onResponse(Call<JWTModel> call, Response<JWTModel> response) {
                 switch (response.code()) {
                     case ServerCode.SIGNIN_RES_SUCCESS:
-                        String token = null;
+                        JWTModel token = null;
                         if (response.body() != null) {
-                            token = response.body().getAuthorization();
+                            token = (JWTModel)response.body();
                         }
-                        setJWTToken(token);
-                        Toast.makeText(getApplicationContext(), token, Toast.LENGTH_SHORT).show();
+                        setJWTToken(token.getToken(), token.getRefreshToken());
+                        Toast.makeText(getApplicationContext(), token.getToken(), Toast.LENGTH_SHORT).show();
                         Log.i("SignIn", "로그인 성공 " + token);
+                        Intent intent = new Intent(getApplicationContext(), CreateMentoringActivity.class);
+                        startActivity(intent);
                         SignInActivity.this.finish();
                         break;
                     case ServerCode.SIGNIN_RES_NO_ACCOUNT:
-                        Toast.makeText(SignInActivity.this, "이미 존재하는 아이디입니다.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignInActivity.this, "로그인 실패", Toast.LENGTH_SHORT).show();
                         Log.i("SignIn", "null response \n response message : " + response.message() + "\n response code : " + response.code() + " errorBody : " + response.errorBody());
                         break;
                     default:
@@ -225,11 +228,12 @@ public class SignInActivity extends AppCompatActivity {
         });
     }
 
-    private void setJWTToken(String token) {
+    private void setJWTToken(String token, String refreshToken) {
         pref = getSharedPreferences("pref", MODE_PRIVATE);
         editor = pref.edit();
 
         editor.putString(TAG_TOKEN, token);
+        editor.putString(TAG_REFRESH, refreshToken);
         editor.apply(); // commit()
     }
 

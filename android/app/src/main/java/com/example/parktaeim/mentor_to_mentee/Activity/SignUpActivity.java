@@ -62,7 +62,7 @@ public class SignUpActivity extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!isIdOverlapChecked) {
+                if (!isIdOverlapChecked) {
                     etId.requestFocus();
                     etId.setError("아이디 중복 체크를 진행해주세요");
                 } else {
@@ -76,9 +76,6 @@ public class SignUpActivity extends AppCompatActivity {
                 }
             }
         });
-
-        btnOverlap = findViewById(R.id.btnOverlap);
-
 
         toolbar = findViewById(R.id.toolbar);
         toolbar_title = findViewById(R.id.toolbar_title);
@@ -159,11 +156,11 @@ public class SignUpActivity extends AppCompatActivity {
             etMap.get(strSignUp.PWCONFIRM).setError(getString(R.string.error_no_match_pwConfirm));
             focusView = etMap.get(strSignUp.PWCONFIRM);
             isError = true;
-        } else if (!TextUtils.isEmpty(signUp.getPhone())) {
+        } else if (TextUtils.isEmpty(signUp.getPhone())) {
             etMap.get(strSignUp.PHONE).setError(getString(R.string.error_no_input_phoneCall));
             focusView = etMap.get(strSignUp.PHONE);
             isError = true;
-        } else if (!TextUtils.isEmpty(etMap.get(strSignUp.AGE).getText().toString())) {
+        } else if (TextUtils.isEmpty(etMap.get(strSignUp.AGE).getText().toString())) {
             etMap.get(strSignUp.AGE).setError(getString(R.string.error_no_input_age));
             focusView = etMap.get(strSignUp.AGE);
             isError = true;
@@ -185,19 +182,22 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 switch (response.code()) {
+
                     case ServerCode.OVERLAP_SUCCESS:
-                        Toast.makeText(SignUpActivity.this, "사용할 수 있는 아이디입니다", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "사용할 수 있는 아이디입니다", Toast.LENGTH_SHORT).show();
                         isIdOverlapChecked = true;
+                        break;
                     case ServerCode.OVERLAP_FAILED:
-                        Toast.makeText(SignUpActivity.this, "사용할 수 없는 아이디입니다", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "사용할 수 없는 아이디입니다", Toast.LENGTH_SHORT).show();
                         isIdOverlapChecked = false;
                         break;
                     case ServerCode.OVERLAP_SERER_ERROR:
-                        Toast.makeText(SignUpActivity.this, "서버와의 통신에 문제가 발생했습니다. 잠시후 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "서버와의 통신에 문제가 발생했습니다. 잠시후 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
                         isIdOverlapChecked = false;
                         break;
                 }
-                Log.i(TAG, "통신완료");
+
+                Log.i(TAG, "통신완료 " + response.code());
             }
 
             @Override
